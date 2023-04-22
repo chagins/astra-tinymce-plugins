@@ -1,0 +1,24 @@
+{
+  "name": "astra-tinymce-plugins",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "yo tinymce"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chagins/astra-tinymce-plugins.git"
+  },
+  "author": "chagins",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/chagins/astra-tinymce-plugins/issues"
+  },
+  "homepage": "https://github.com/chagins/astra-tinymce-plugins#readme",
+  "devDependencies": {
+    "generator-tinymce": "^1.4.16",
+    "yo": "^4.3.1"
+  }
+}
