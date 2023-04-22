@@ -81,7 +81,7 @@ module.exports = (grunt) => {
         files: {
           'dist/astra-pagebreak/plugin.js': [
             'src/text/license-header.js',
-            scratchPluginMinPath
+            scratchPluginPath
           ],
           'dist/astra-pagebreak/plugin.min.js': [
             'src/text/license-header.js',
