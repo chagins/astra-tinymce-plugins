@@ -53,5 +53,5 @@
   "main": "./lib/main/ts/api/Main.js",
   "module": "./lib/main/ts/api/Main.js",
   "types": "./lib/main/ts/api/Main.d.ts",
-  "license": "unlicense"
+  "license": "UNLICENSED"
 }
