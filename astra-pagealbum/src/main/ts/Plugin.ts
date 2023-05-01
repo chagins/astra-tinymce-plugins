@@ -30,8 +30,9 @@ const setup = (): void => {
   type TProperties = {
     defaultHtmlSeparator: TResultType;
     htmlSeparatorOptionName: TResultType;
+    svgPlaceholderOptionName: TResultType;
     astraPageAlbumClass: TResultType;
-    svg: TResultType;
+    defaultSvg: TResultType;
     commandNames: TResultType;
   };
 
@@ -40,18 +41,22 @@ const setup = (): void => {
       start: '<!-- astra-pagealbum-start -->',
       end: '<!-- astra-pagealbum-end -->',
     },
+    defaultSvg: {
+      start:
+        'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcKICAgd2lkdGg9IjUzMCIKICAgaGVpZ2h0PSIyMSIKICAgdmVyc2lvbj0iMS4xIgogICB2aWV3Qm94PSIwIDAgMTQwLjIyNTM1IDUuNTU2MzE0MSIKICAgaWQ9InN2ZzgiCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM6c3ZnPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGRlZnMKICAgICBpZD0iZGVmczEyIiAvPgogIDxnCiAgICAgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTkuMTUwOSwtOC45MTc5KSIKICAgICBpZD0iZzYiPgogICAgPHRleHQKICAgICAgIHg9IjkuMTYyNjcxMSIKICAgICAgIHk9IjEzLjMzOTk2OCIKICAgICAgIHN0eWxlPSJmb250LXNpemU6NC4yMzMzOHB4O2xpbmUtaGVpZ2h0OjEuMjU7Zm9udC1mYW1pbHk6J1NlZ29lIFVJJztmb250LXZhcmlhbnQtbGlnYXR1cmVzOm5vcm1hbDtmb250LXZhcmlhbnQtY2Fwczpub3JtYWw7Zm9udC12YXJpYW50LW51bWVyaWM6bm9ybWFsO2ZvbnQtdmFyaWFudC1lYXN0LWFzaWFuOm5vcm1hbDtmaWxsOiMwMDc4ZDI7c3Ryb2tlLXdpZHRoOjAuMjY0NTgiCiAgICAgICB4bWw6c3BhY2U9InByZXNlcnZlIgogICAgICAgaWQ9InRleHQ0Ij48dHNwYW4KICAgICAgICAgeD0iOS4xNjI2NzExIgogICAgICAgICB5PSIxMy4zMzk5NjgiCiAgICAgICAgIHN0eWxlPSJmb250LXNpemU6NC4yMzMzOHB4O2ZvbnQtZmFtaWx5OidTZWdvZSBVSSc7Zm9udC12YXJpYW50LWxpZ2F0dXJlczpub3JtYWw7Zm9udC12YXJpYW50LWNhcHM6bm9ybWFsO2ZvbnQtdmFyaWFudC1udW1lcmljOm5vcm1hbDtmb250LXZhcmlhbnQtZWFzdC1hc2lhbjpub3JtYWw7ZmlsbDojMDA3OGQyO3N0cm9rZS13aWR0aDowLjI2NDU4IgogICAgICAgICBpZD0idHNwYW4yIj4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tPHRzcGFuCiAgIHN0eWxlPSJmb250LXN0eWxlOm5vcm1hbDtmb250LXZhcmlhbnQ6bm9ybWFsO2ZvbnQtd2VpZ2h0Om5vcm1hbDtmb250LXN0cmV0Y2g6bm9ybWFsO2ZvbnQtc2l6ZTo0LjIzMzM4cHg7Zm9udC1mYW1pbHk6J1NlZ29lIFVJJzstaW5rc2NhcGUtZm9udC1zcGVjaWZpY2F0aW9uOidTZWdvZSBVSSwgTm9ybWFsJztmb250LXZhcmlhbnQtbGlnYXR1cmVzOm5vcm1hbDtmb250LXZhcmlhbnQtcG9zaXRpb246bm9ybWFsO2ZvbnQtdmFyaWFudC1jYXBzOm5vcm1hbDtmb250LXZhcmlhbnQtbnVtZXJpYzpub3JtYWw7Zm9udC12YXJpYW50LWVhc3QtYXNpYW46bm9ybWFsIgogICBpZD0idHNwYW44Nzc1NyI+8J+hszwvdHNwYW4+INCQ0LvRjNCx0L7QvNC90LDRjyDQvtGA0LjQtdC90YLQsNGG0LjRjyDwn6GzLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLTwvdHNwYW4+PC90ZXh0PgogIDwvZz4KPC9zdmc+Cg==',
+      end: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcKICAgd2lkdGg9IjUzMCIKICAgaGVpZ2h0PSIyMSIKICAgdmVyc2lvbj0iMS4xIgogICB2aWV3Qm94PSIwIDAgMTQwLjIyNTM1IDUuNTU2MzE0MSIKICAgaWQ9InN2ZzgiCiAgIHNvZGlwb2RpOmRvY25hbWU9InBhZ2UtYWxidW0tbWFya2VyLWVuZC5zdmciCiAgIGlua3NjYXBlOnZlcnNpb249IjEuMS4yIChiOGUyNWJlODMzLCAyMDIyLTAyLTA1KSIKICAgeG1sbnM6aW5rc2NhcGU9Imh0dHA6Ly93d3cuaW5rc2NhcGUub3JnL25hbWVzcGFjZXMvaW5rc2NhcGUiCiAgIHhtbG5zOnNvZGlwb2RpPSJodHRwOi8vc29kaXBvZGkuc291cmNlZm9yZ2UubmV0L0RURC9zb2RpcG9kaS0wLmR0ZCIKICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcwogICAgIGlkPSJkZWZzMTIiIC8+CiAgPHNvZGlwb2RpOm5hbWVkdmlldwogICAgIGlkPSJuYW1lZHZpZXcxMCIKICAgICBwYWdlY29sb3I9IiNmZmZmZmYiCiAgICAgYm9yZGVyY29sb3I9IiM2NjY2NjYiCiAgICAgYm9yZGVyb3BhY2l0eT0iMS4wIgogICAgIGlua3NjYXBlOnBhZ2VzaGFkb3c9IjIiCiAgICAgaW5rc2NhcGU6cGFnZW9wYWNpdHk9IjAuMCIKICAgICBpbmtzY2FwZTpwYWdlY2hlY2tlcmJvYXJkPSIwIgogICAgIHNob3dncmlkPSJmYWxzZSIKICAgICB3aWR0aD0iNjA3cHgiCiAgICAgaGVpZ2h0PSIyMS4zNjNweCIKICAgICBpbmtzY2FwZTp6b29tPSIxLjQ3Mzc2MTEiCiAgICAgaW5rc2NhcGU6Y3g9IjMxNC44NDA3MiIKICAgICBpbmtzY2FwZTpjeT0iNTUuNjM5OTU0IgogICAgIGlua3NjYXBlOndpbmRvdy13aWR0aD0iMTkyMCIKICAgICBpbmtzY2FwZTp3aW5kb3ctaGVpZ2h0PSIxMDA5IgogICAgIGlua3NjYXBlOndpbmRvdy14PSItOCIKICAgICBpbmtzY2FwZTp3aW5kb3cteT0iLTgiCiAgICAgaW5rc2NhcGU6d2luZG93LW1heGltaXplZD0iMSIKICAgICBpbmtzY2FwZTpjdXJyZW50LWxheWVyPSJnNiIgLz4KICA8ZwogICAgIHRyYW5zZm9ybT0idHJhbnNsYXRlKC05LjE1MDksLTguOTE3OSkiCiAgICAgaWQ9Imc2Ij4KICAgIDx0ZXh0CiAgICAgICB4PSI5LjE2MjY3MTEiCiAgICAgICB5PSIxMi45ODA5MDYiCiAgICAgICBzdHlsZT0iZm9udC1zaXplOjQuMjMzMzhweDtsaW5lLWhlaWdodDoxLjI1O2ZvbnQtZmFtaWx5OidTZWdvZSBVSSc7Zm9udC12YXJpYW50LWxpZ2F0dXJlczpub3JtYWw7Zm9udC12YXJpYW50LWNhcHM6bm9ybWFsO2ZvbnQtdmFyaWFudC1udW1lcmljOm5vcm1hbDtmb250LXZhcmlhbnQtZWFzdC1hc2lhbjpub3JtYWw7ZmlsbDojMDA3OGQyO3N0cm9rZS13aWR0aDowLjI2NDU4IgogICAgICAgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIKICAgICAgIGlkPSJ0ZXh0NCI+PHRzcGFuCiAgICAgICAgIHg9IjkuMTYyNjcxMSIKICAgICAgICAgeT0iMTIuOTgwOTA2IgogICAgICAgICBzdHlsZT0iZm9udC1zaXplOjQuMjMzMzhweDtmb250LWZhbWlseTonU2Vnb2UgVUknO2ZvbnQtdmFyaWFudC1saWdhdHVyZXM6bm9ybWFsO2ZvbnQtdmFyaWFudC1jYXBzOm5vcm1hbDtmb250LXZhcmlhbnQtbnVtZXJpYzpub3JtYWw7Zm9udC12YXJpYW50LWVhc3QtYXNpYW46bm9ybWFsO2ZpbGw6IzAwNzhkMjtzdHJva2Utd2lkdGg6MC4yNjQ1OCIKICAgICAgICAgaWQ9InRzcGFuMiI+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLfCfobEg0JDQu9GM0LHQvtC80L3QsNGPINC+0YDQuNC10L3RgtCw0YbQuNGPIPCfobEtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tPC90c3Bhbj48L3RleHQ+CiAgPC9nPgo8L3N2Zz4K',
+    },
     htmlSeparatorOptionName: {
       start: 'astra_pagealbum_start_separator',
       end: 'astra_pagealbum_end_separator',
     },
+    svgPlaceholderOptionName: {
+      start: 'astra_pagealbum_start_svg_data_URI',
+      end: 'astra_pagealbum_end_svg_data_URI',
+    },
     astraPageAlbumClass: {
       start: 'mce-astra-pagealbum-start',
       end: 'mce-astra-pagealbum-end',
-    },
-    svg: {
-      start:
-        'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcKICAgd2lkdGg9IjUzMCIKICAgaGVpZ2h0PSIyMSIKICAgdmVyc2lvbj0iMS4xIgogICB2aWV3Qm94PSIwIDAgMTQwLjIyNTM1IDUuNTU2MzE0MSIKICAgaWQ9InN2ZzgiCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM6c3ZnPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGRlZnMKICAgICBpZD0iZGVmczEyIiAvPgogIDxnCiAgICAgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTkuMTUwOSwtOC45MTc5KSIKICAgICBpZD0iZzYiPgogICAgPHRleHQKICAgICAgIHg9IjkuMTYyNjcxMSIKICAgICAgIHk9IjEzLjMzOTk2OCIKICAgICAgIHN0eWxlPSJmb250LXNpemU6NC4yMzMzOHB4O2xpbmUtaGVpZ2h0OjEuMjU7Zm9udC1mYW1pbHk6J1NlZ29lIFVJJztmb250LXZhcmlhbnQtbGlnYXR1cmVzOm5vcm1hbDtmb250LXZhcmlhbnQtY2Fwczpub3JtYWw7Zm9udC12YXJpYW50LW51bWVyaWM6bm9ybWFsO2ZvbnQtdmFyaWFudC1lYXN0LWFzaWFuOm5vcm1hbDtmaWxsOiMwMDc4ZDI7c3Ryb2tlLXdpZHRoOjAuMjY0NTgiCiAgICAgICB4bWw6c3BhY2U9InByZXNlcnZlIgogICAgICAgaWQ9InRleHQ0Ij48dHNwYW4KICAgICAgICAgeD0iOS4xNjI2NzExIgogICAgICAgICB5PSIxMy4zMzk5NjgiCiAgICAgICAgIHN0eWxlPSJmb250LXNpemU6NC4yMzMzOHB4O2ZvbnQtZmFtaWx5OidTZWdvZSBVSSc7Zm9udC12YXJpYW50LWxpZ2F0dXJlczpub3JtYWw7Zm9udC12YXJpYW50LWNhcHM6bm9ybWFsO2ZvbnQtdmFyaWFudC1udW1lcmljOm5vcm1hbDtmb250LXZhcmlhbnQtZWFzdC1hc2lhbjpub3JtYWw7ZmlsbDojMDA3OGQyO3N0cm9rZS13aWR0aDowLjI2NDU4IgogICAgICAgICBpZD0idHNwYW4yIj4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tPHRzcGFuCiAgIHN0eWxlPSJmb250LXN0eWxlOm5vcm1hbDtmb250LXZhcmlhbnQ6bm9ybWFsO2ZvbnQtd2VpZ2h0Om5vcm1hbDtmb250LXN0cmV0Y2g6bm9ybWFsO2ZvbnQtc2l6ZTo0LjIzMzM4cHg7Zm9udC1mYW1pbHk6J1NlZ29lIFVJJzstaW5rc2NhcGUtZm9udC1zcGVjaWZpY2F0aW9uOidTZWdvZSBVSSwgTm9ybWFsJztmb250LXZhcmlhbnQtbGlnYXR1cmVzOm5vcm1hbDtmb250LXZhcmlhbnQtcG9zaXRpb246bm9ybWFsO2ZvbnQtdmFyaWFudC1jYXBzOm5vcm1hbDtmb250LXZhcmlhbnQtbnVtZXJpYzpub3JtYWw7Zm9udC12YXJpYW50LWVhc3QtYXNpYW46bm9ybWFsIgogICBpZD0idHNwYW44Nzc1NyI+8J+hszwvdHNwYW4+INCQ0LvRjNCx0L7QvNC90LDRjyDQvtGA0LjQtdC90YLQsNGG0LjRjyDwn6GzLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLTwvdHNwYW4+PC90ZXh0PgogIDwvZz4KPC9zdmc+Cg==',
-      end: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcKICAgd2lkdGg9IjUzMCIKICAgaGVpZ2h0PSIyMSIKICAgdmVyc2lvbj0iMS4xIgogICB2aWV3Qm94PSIwIDAgMTQwLjIyNTM1IDUuNTU2MzE0MSIKICAgaWQ9InN2ZzgiCiAgIHNvZGlwb2RpOmRvY25hbWU9InBhZ2UtYWxidW0tbWFya2VyLWVuZC5zdmciCiAgIGlua3NjYXBlOnZlcnNpb249IjEuMS4yIChiOGUyNWJlODMzLCAyMDIyLTAyLTA1KSIKICAgeG1sbnM6aW5rc2NhcGU9Imh0dHA6Ly93d3cuaW5rc2NhcGUub3JnL25hbWVzcGFjZXMvaW5rc2NhcGUiCiAgIHhtbG5zOnNvZGlwb2RpPSJodHRwOi8vc29kaXBvZGkuc291cmNlZm9yZ2UubmV0L0RURC9zb2RpcG9kaS0wLmR0ZCIKICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcwogICAgIGlkPSJkZWZzMTIiIC8+CiAgPHNvZGlwb2RpOm5hbWVkdmlldwogICAgIGlkPSJuYW1lZHZpZXcxMCIKICAgICBwYWdlY29sb3I9IiNmZmZmZmYiCiAgICAgYm9yZGVyY29sb3I9IiM2NjY2NjYiCiAgICAgYm9yZGVyb3BhY2l0eT0iMS4wIgogICAgIGlua3NjYXBlOnBhZ2VzaGFkb3c9IjIiCiAgICAgaW5rc2NhcGU6cGFnZW9wYWNpdHk9IjAuMCIKICAgICBpbmtzY2FwZTpwYWdlY2hlY2tlcmJvYXJkPSIwIgogICAgIHNob3dncmlkPSJmYWxzZSIKICAgICB3aWR0aD0iNjA3cHgiCiAgICAgaGVpZ2h0PSIyMS4zNjNweCIKICAgICBpbmtzY2FwZTp6b29tPSIxLjQ3Mzc2MTEiCiAgICAgaW5rc2NhcGU6Y3g9IjMxNC44NDA3MiIKICAgICBpbmtzY2FwZTpjeT0iNTUuNjM5OTU0IgogICAgIGlua3NjYXBlOndpbmRvdy13aWR0aD0iMTkyMCIKICAgICBpbmtzY2FwZTp3aW5kb3ctaGVpZ2h0PSIxMDA5IgogICAgIGlua3NjYXBlOndpbmRvdy14PSItOCIKICAgICBpbmtzY2FwZTp3aW5kb3cteT0iLTgiCiAgICAgaW5rc2NhcGU6d2luZG93LW1heGltaXplZD0iMSIKICAgICBpbmtzY2FwZTpjdXJyZW50LWxheWVyPSJnNiIgLz4KICA8ZwogICAgIHRyYW5zZm9ybT0idHJhbnNsYXRlKC05LjE1MDksLTguOTE3OSkiCiAgICAgaWQ9Imc2Ij4KICAgIDx0ZXh0CiAgICAgICB4PSI5LjE2MjY3MTEiCiAgICAgICB5PSIxMi45ODA5MDYiCiAgICAgICBzdHlsZT0iZm9udC1zaXplOjQuMjMzMzhweDtsaW5lLWhlaWdodDoxLjI1O2ZvbnQtZmFtaWx5OidTZWdvZSBVSSc7Zm9udC12YXJpYW50LWxpZ2F0dXJlczpub3JtYWw7Zm9udC12YXJpYW50LWNhcHM6bm9ybWFsO2ZvbnQtdmFyaWFudC1udW1lcmljOm5vcm1hbDtmb250LXZhcmlhbnQtZWFzdC1hc2lhbjpub3JtYWw7ZmlsbDojMDA3OGQyO3N0cm9rZS13aWR0aDowLjI2NDU4IgogICAgICAgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIKICAgICAgIGlkPSJ0ZXh0NCI+PHRzcGFuCiAgICAgICAgIHg9IjkuMTYyNjcxMSIKICAgICAgICAgeT0iMTIuOTgwOTA2IgogICAgICAgICBzdHlsZT0iZm9udC1zaXplOjQuMjMzMzhweDtmb250LWZhbWlseTonU2Vnb2UgVUknO2ZvbnQtdmFyaWFudC1saWdhdHVyZXM6bm9ybWFsO2ZvbnQtdmFyaWFudC1jYXBzOm5vcm1hbDtmb250LXZhcmlhbnQtbnVtZXJpYzpub3JtYWw7Zm9udC12YXJpYW50LWVhc3QtYXNpYW46bm9ybWFsO2ZpbGw6IzAwNzhkMjtzdHJva2Utd2lkdGg6MC4yNjQ1OCIKICAgICAgICAgaWQ9InRzcGFuMiI+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLfCfobEg0JDQu9GM0LHQvtC80L3QsNGPINC+0YDQuNC10L3RgtCw0YbQuNGPIPCfobEtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tPC90c3Bhbj48L3RleHQ+CiAgPC9nPgo8L3N2Zz4K',
     },
     commandNames: {
       start: 'mceAstraPageAlbumStart',
@@ -59,29 +64,33 @@ const setup = (): void => {
     },
   };
 
-  const getHtmlSeparator = (editor: Editor, type: TPropertyType) => {
+  const getHtmlSeparatorOption = (editor: Editor, type: TPropertyType) => {
     return editor.options.get(properties.htmlSeparatorOptionName[type]) as string;
   };
+
+  const getSvgPlaceholderOption = (editor: Editor, type: TPropertyType) => {
+    return editor.options.get(properties.svgPlaceholderOptionName[type]) as string;
+  }
 
   const getRegExpHTMlSeparator = (editor: Editor) => {
     const regexpStr = propertiesTypes
       .reduce<string[]>((acc, type) => {
-        const htmlSeparator = getHtmlSeparator(editor, type);
+        const htmlSeparator = getHtmlSeparatorOption(editor, type);
         return acc.concat(htmlSeparator);
       }, [])
       .join('|');
     return new RegExp(regexpStr, 'gi');
   };
 
-  const getHTMLPlaceholder = (type: TPropertyType) => {
-    const svg = properties.svg[type];
+  const getHTMLPlaceholder = (editor: Editor, type: TPropertyType) => {
+    const svg = getSvgPlaceholderOption(editor, type);
     const className = properties.astraPageAlbumClass[type];
     const html = `<img style="display: block;" src="${svg}" class="${className}" data-mce-resize="false" data-mce-placeholder />`;
     return `<p>${html}</p>`;
   };
 
-  const getNodePlaceholder = (type: TPropertyType) => {
-    const html = getHTMLPlaceholder(type);
+  const getNodePlaceholder = (editor: Editor, type: TPropertyType) => {
+    const html = getHTMLPlaceholder(editor, type);
     const template = document.createElement('template');
     template.innerHTML = html;
     return template.content.firstElementChild;
@@ -235,9 +244,9 @@ const setup = (): void => {
     if (hasOffset(editor, placeHolderType) && canSplit(topParentElement)) {
       editor.execCommand('InsertParagraph');
       selectedElement = editor.selection.getStart();
-      insertElement(editor, selectedElement, getNodePlaceholder(placeHolderType), 'start');
+      insertElement(editor, selectedElement, getNodePlaceholder(editor, placeHolderType), 'start');
     } else {
-      insertElement(editor, topParentElement, getNodePlaceholder(placeHolderType), placeHolderType);
+      insertElement(editor, topParentElement, getNodePlaceholder(editor, placeHolderType), placeHolderType);
     }
   };
 
@@ -262,12 +271,12 @@ const setup = (): void => {
     if (hasStartOffset && startCanSplit) {
       editor.execCommand('InsertParagraph');
       startElement = editor.selection.getStart();
-      insertElement(editor, startElement, getNodePlaceholder(firstPlaceholderType), 'start');
+      insertElement(editor, startElement, getNodePlaceholder(editor, firstPlaceholderType), 'start');
     } else {
       insertElement(
         editor,
         topParentStartElement,
-        getNodePlaceholder(firstPlaceholderType),
+        getNodePlaceholder(editor, firstPlaceholderType),
         'start'
       );
     }
@@ -282,7 +291,7 @@ const setup = (): void => {
       editor.selection.setCursorLocation(endElement?.firstChild, endOffset);
       editor.execCommand('InsertParagraph');
     }
-    insertElement(editor, endElement, getNodePlaceholder(secondPlaceholderType), 'end');
+    insertElement(editor, endElement, getNodePlaceholder(editor, secondPlaceholderType), 'end');
   };
 
   const removePairPlaceholders = (editor: Editor) => {
@@ -371,6 +380,10 @@ const setup = (): void => {
         processor: 'string',
         default: properties.defaultHtmlSeparator[type],
       });
+      editor.options.register(properties.svgPlaceholderOptionName[type], {
+        processor: 'string',
+        default: properties.defaultSvg[type],
+      });
     });
   };
 
@@ -399,9 +412,9 @@ const setup = (): void => {
     editor.on('BeforeSetContent', (e: TBeforeSetContentEvent) => {
       e.content = e.content.replace(getRegExpHTMlSeparator(editor), (matched) => {
         const propertyType = propertiesTypes.find(
-          (type) => getHtmlSeparator(editor, type) === matched
+          (type) => getHtmlSeparatorOption(editor, type) === matched
         );
-        return propertyType ? getHTMLPlaceholder(propertyType) : matched;
+        return propertyType ? getHTMLPlaceholder(editor, propertyType) : matched;
       });
     });
 
@@ -415,7 +428,7 @@ const setup = (): void => {
           );
 
           if (className && propertyType) {
-            const htmlSeparator = getHtmlSeparator(editor, propertyType);
+            const htmlSeparator = getHtmlSeparatorOption(editor, propertyType);
             const parentNode = node.parent;
             if (parentNode && editor.schema.getBlockElements()[parentNode.name]) {
               parentNode.type = textNodeTypeValue;
@@ -447,7 +460,7 @@ const setup = (): void => {
   const registerCommands = (editor: Editor) => {
     propertiesTypes.forEach((type) => {
       editor.addCommand(properties.commandNames[type], () => {
-        editor.insertContent(getHTMLPlaceholder(type));
+        editor.insertContent(getHTMLPlaceholder(editor, type));
       });
     });
   };
@@ -464,6 +477,10 @@ const setup = (): void => {
 
   registerPlugin();
 };
+
+
+
+
 
 export default (): void => {
   setup();
