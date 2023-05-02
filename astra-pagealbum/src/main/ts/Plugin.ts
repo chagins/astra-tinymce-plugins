@@ -70,7 +70,7 @@ const setup = (): void => {
 
   const getSvgPlaceholderOption = (editor: Editor, type: TPropertyType) => {
     return editor.options.get(properties.svgPlaceholderOptionName[type]) as string;
-  }
+  };
 
   const getRegExpHTMlSeparator = (editor: Editor) => {
     const regexpStr = propertiesTypes
@@ -93,20 +93,18 @@ const setup = (): void => {
     const html = getHTMLPlaceholder(editor, type);
     const template = document.createElement('template');
     template.innerHTML = html;
-    return template.content.firstElementChild;
+    return template.content.firstElementChild as Element;
   };
 
   const isAlbumPagePlaceholder = (element: Element, pageAlbumClassName: string) => {
     const isImgPlaceholder =
       element.tagName === 'IMG' && element.classList.contains(pageAlbumClassName);
     const isParagraphPlaceholder =
-      element.tagName === 'P' &&
-      element?.children?.length > 0 &&
-      element?.children.item(0)?.classList.contains(pageAlbumClassName);
-    return isImgPlaceholder || isParagraphPlaceholder;
+      element.tagName === 'P' && element.children.item(0)?.classList.contains(pageAlbumClassName);
+    return isImgPlaceholder || !!isParagraphPlaceholder;
   };
 
-  const isSpecificAlbumPagePlaceholder = (element: Element, type: TPropertyType) => {
+  const isSpecificAlbumPagePlaceholder = (element: Element | null, type: TPropertyType) => {
     if (!element) {
       return false;
     }
@@ -114,17 +112,30 @@ const setup = (): void => {
     return isAlbumPagePlaceholder(element, pageAlbumClassName);
   };
 
-  const isAnyAlbumPagePlaceholder = (...elements: Element[]) => {
+  const isAnyAlbumPagePlaceholder = (...elements: Array<Element | null>) => {
     return elements.some((element) =>
       propertiesTypes.some((type) => isSpecificAlbumPagePlaceholder(element, type))
     );
+  };
+
+  const getTopParentElement = (element: Element) => {
+    let currentElement = element;
+    while (
+      currentElement &&
+      currentElement.parentElement &&
+      currentElement.parentElement?.tagName !== 'HTML' &&
+      currentElement.parentElement?.tagName !== 'BODY'
+    ) {
+      currentElement = currentElement.parentElement;
+    }
+    return currentElement;
   };
 
   const contentContainsPlaceholders = (editor: Editor) => {
     let result = false;
     const topStartElement = getTopParentElement(editor.selection.getStart());
     const topEndElement = getTopParentElement(editor.selection.getEnd());
-    let currentElement = topStartElement;
+    let currentElement: Element | null = topStartElement;
 
     while (currentElement && currentElement !== topEndElement) {
       if (isAnyAlbumPagePlaceholder(currentElement)) {
@@ -134,6 +145,10 @@ const setup = (): void => {
     }
 
     return result;
+  };
+
+  const getSiblingElement = (element: Element, direction: TPropertyType) => {
+    return direction === 'start' ? element.previousElementSibling : element.nextElementSibling;
   };
 
   const contentWrappedInPlaceholders = (editor: Editor) => {
@@ -148,28 +163,13 @@ const setup = (): void => {
     return isStartPageAlbumPlaceholder && isEndPageAlbumPlaceholder;
   };
 
-  const getTopParentElement = (element: Element) => {
-    let currentElement = element;
-    while (
-      currentElement &&
-      currentElement.parentElement?.tagName !== 'HTML' &&
-      currentElement.parentElement?.tagName !== 'BODY'
-    ) {
-      currentElement = currentElement.parentElement;
-    }
-    return currentElement;
-  };
-
-  const getSiblingElement = (element: Element, direction: TPropertyType) => {
-    return direction === 'start' ? element.previousElementSibling : element.nextElementSibling;
-  };
-
   const findPageAlbumPlaceholder = (currentElement: Element, direction: TPropertyType) => {
     let siblingElement: Element | null = currentElement;
+    const getPropertyType = (element: Element) => {
+      return propertiesTypes.find((type) => isSpecificAlbumPagePlaceholder(element, type));
+    };
     while (siblingElement) {
-      const propertyType = propertiesTypes.find((type) =>
-        isSpecificAlbumPagePlaceholder(siblingElement, type)
-      );
+      const propertyType = getPropertyType(siblingElement);
       if (propertyType === direction) {
         break;
       } else if (propertyType && propertyType !== direction) {
@@ -204,20 +204,20 @@ const setup = (): void => {
   ) => {
     const topParentElement = getTopParentElement(exitingElement);
     const siblingElement = getSiblingElement(topParentElement, direction);
-    const isAlbumPagePlaceholder = isAnyAlbumPagePlaceholder(siblingElement);
+    const isPlaceholder = isAnyAlbumPagePlaceholder(siblingElement);
     let cursorLocationElement: Element | ChildNode;
     let cursorOffset = 0;
 
-    if (isAlbumPagePlaceholder) {
-      siblingElement.remove();
+    if (isPlaceholder) {
+      siblingElement?.remove();
     } else {
       if (direction === 'start') {
         topParentElement.before(newElement);
-        cursorLocationElement = topParentElement?.firstChild;
+        cursorLocationElement = topParentElement?.firstChild || topParentElement;
       } else {
         topParentElement.after(newElement);
         const albumPlaceholder = findPageAlbumPlaceholder(topParentElement, direction);
-        cursorLocationElement = albumPlaceholder;
+        cursorLocationElement = albumPlaceholder || topParentElement;
         cursorOffset = 1;
       }
       editor.selection.setCursorLocation(cursorLocationElement, cursorOffset);
@@ -232,7 +232,7 @@ const setup = (): void => {
     const range = editor.selection.getRng();
     return direction === 'start'
       ? range.startOffset !== 0
-      : range.endOffset !== range.endContainer.textContent.length;
+      : range.endOffset !== range.endContainer.textContent?.length;
   };
 
   const insertSinglePlaceholder = (editor: Editor, placeHolderType: TPropertyType) => {
@@ -246,7 +246,12 @@ const setup = (): void => {
       selectedElement = editor.selection.getStart();
       insertElement(editor, selectedElement, getNodePlaceholder(editor, placeHolderType), 'start');
     } else {
-      insertElement(editor, topParentElement, getNodePlaceholder(editor, placeHolderType), placeHolderType);
+      insertElement(
+        editor,
+        topParentElement,
+        getNodePlaceholder(editor, placeHolderType),
+        placeHolderType
+      );
     }
   };
 
@@ -271,7 +276,12 @@ const setup = (): void => {
     if (hasStartOffset && startCanSplit) {
       editor.execCommand('InsertParagraph');
       startElement = editor.selection.getStart();
-      insertElement(editor, startElement, getNodePlaceholder(editor, firstPlaceholderType), 'start');
+      insertElement(
+        editor,
+        startElement,
+        getNodePlaceholder(editor, firstPlaceholderType),
+        'start'
+      );
     } else {
       insertElement(
         editor,
@@ -288,7 +298,7 @@ const setup = (): void => {
     if (hasEndOffset && endCanSplit) {
       endOffset =
         topParentStartElement === topParentEndElement ? (endOffset -= startOffset) : endOffset;
-      editor.selection.setCursorLocation(endElement?.firstChild, endOffset);
+      editor.selection.setCursorLocation(endElement?.firstChild || endElement, endOffset);
       editor.execCommand('InsertParagraph');
     }
     insertElement(editor, endElement, getNodePlaceholder(editor, secondPlaceholderType), 'end');
@@ -300,8 +310,8 @@ const setup = (): void => {
     const endElement = selection.getEnd();
     const topSibling = getSiblingElement(getTopParentElement(startElement), 'start');
     const endSibling = getSiblingElement(getTopParentElement(endElement), 'end');
-    topSibling.remove();
-    endSibling.remove();
+    topSibling?.remove();
+    endSibling?.remove();
     selection.collapse(true);
   };
 
@@ -350,11 +360,11 @@ const setup = (): void => {
             const firstPlaceholderType = propertiesTypes.find((type) => {
               return imgElement.classList.contains(properties.astraPageAlbumClass[type]);
             });
-            if (firstPlaceholderType) {
+            const secondPlaceholderType = propertiesTypes.find(
+              (type) => type !== firstPlaceholderType
+            );
+            if (firstPlaceholderType && secondPlaceholderType) {
               const firstPlaceholder = target as Element;
-              const secondPlaceholderType = propertiesTypes.find(
-                (type) => type !== firstPlaceholderType
-              );
               const secondPlaceholder = findPageAlbumPlaceholder(
                 firstPlaceholder,
                 secondPlaceholderType
@@ -477,10 +487,6 @@ const setup = (): void => {
 
   registerPlugin();
 };
-
-
-
-
 
 export default (): void => {
   setup();

@@ -93,7 +93,7 @@ const setup = (): void => {
     });
   };
 
-  const registerButton = (editor) => {
+  const registerButton = (editor: Editor) => {
     const onAction = () => editor.execCommand("mceAstraPageBreak");
     editor.ui.registry.addButton("astra-pagebreak", {
       icon: "page-break",

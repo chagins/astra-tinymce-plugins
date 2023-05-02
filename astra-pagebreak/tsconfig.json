@@ -10,7 +10,15 @@
     "sourceMap": true,
     "outDir": "lib",
     "baseUrl": ".",
-    "types": ["mocha"]
+    "types": ["mocha"],
+    "alwaysStrict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    "strictFunctionTypes": true,
+    "noImplicitThis": true,
+    "strictBindCallApply": true,
+    "strict": true
   },
   "include": [
     "src/demo/ts",
