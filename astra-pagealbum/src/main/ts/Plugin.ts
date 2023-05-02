@@ -155,12 +155,18 @@ const setup = (): void => {
     const selection = editor.selection;
     const startElement = selection.getStart();
     const endElement = selection.getEnd();
-    const topSibling = getSiblingElement(getTopParentElement(startElement), 'start');
+    const hasContentOffset = hasOffset(editor, 'start') || hasOffset(editor, 'end');
+    const startSibling = getSiblingElement(getTopParentElement(startElement), 'start');
     const endSibling = getSiblingElement(getTopParentElement(endElement), 'end');
-
-    const isStartPageAlbumPlaceholder = isSpecificAlbumPagePlaceholder(topSibling, 'start');
+    const isStartPageAlbumPlaceholder = isSpecificAlbumPagePlaceholder(startSibling, 'start');
     const isEndPageAlbumPlaceholder = isSpecificAlbumPagePlaceholder(endSibling, 'end');
-    return isStartPageAlbumPlaceholder && isEndPageAlbumPlaceholder;
+    const inPlaceholders = isStartPageAlbumPlaceholder && isEndPageAlbumPlaceholder;
+
+    if (inPlaceholders && startElement === endElement) {
+      return !hasContentOffset;
+    }
+
+    return inPlaceholders;
   };
 
   const findPageAlbumPlaceholder = (currentElement: Element, direction: TPropertyType) => {
