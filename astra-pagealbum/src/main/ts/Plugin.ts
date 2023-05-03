@@ -23,6 +23,7 @@ const setup = (): void => {
   const pluginManager: PluginManager = tinymce.util.Tools.resolve('tinymce.PluginManager');
   let placeholderObserver: MutationObserver;
   const tagsThatCanBeSplit = ['P', 'SPAN'];
+  const tagsThatShouldBeWrappped = ['FIGURE', 'TABLE'];
   const propertiesTypes = ['start', 'end'] as const;
 
   type TPropertyType = (typeof propertiesTypes)[number];
@@ -234,6 +235,10 @@ const setup = (): void => {
     return tagsThatCanBeSplit.includes(element.tagName);
   };
 
+  const shouldBeWrapped = (element: Element) => {
+    return tagsThatShouldBeWrappped.includes(element.tagName);
+  };
+
   const hasOffset = (editor: Editor, direction: TPropertyType) => {
     const range = editor.selection.getRng();
     return direction === 'start'
@@ -302,9 +307,10 @@ const setup = (): void => {
     }
 
     if (hasEndOffset && endCanSplit) {
-      endOffset =
-        topParentStartElement === topParentEndElement ? (endOffset -= startOffset) : endOffset;
-      editor.selection.setCursorLocation(endElement?.firstChild || endElement, endOffset);
+      if (topParentStartElement === topParentEndElement) {
+        endOffset -= startOffset;
+      }
+      editor.selection.setCursorLocation(endElement?.lastChild || endElement, endOffset);
       editor.execCommand('InsertParagraph');
     }
     insertElement(editor, endElement, getNodePlaceholder(editor, secondPlaceholderType), 'end');
@@ -323,8 +329,8 @@ const setup = (): void => {
 
   const getPageAlbumPlaceholder = (editor: Editor, api: TToggleButtonApi) => {
     const selection = editor.selection;
-    const selectionCanSplit = canSplit(getTopParentElement(selection.getStart()));
-    const isSinglePlaceholderMode = selection.isCollapsed() && selectionCanSplit;
+    const selectionShouldBeWrapped = shouldBeWrapped(getTopParentElement(selection.getStart()));
+    const isSinglePlaceholderMode = selection.isCollapsed() && !selectionShouldBeWrapped;
     const containsPlaceholders = contentContainsPlaceholders(editor);
     const contentWrappedIn = contentWrappedInPlaceholders(editor);
     const contentIn = contentInPlaceholders(editor);
