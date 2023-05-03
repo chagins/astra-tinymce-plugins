@@ -9,5 +9,6 @@ Plugin();
 tinymce.init({
   selector: 'textarea.tinymce',
   plugins: 'code astra-pagebreak',
-  toolbar: 'astra-pagebreak'
+  toolbar: 'astra-pagebreak',
+  height: 700,
 });

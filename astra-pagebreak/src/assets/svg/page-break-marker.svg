@@ -1,1 +1,30 @@
-<svg width="521.06" height="18.363" version="1.1" viewBox="0 0 137.86 4.8586" xmlns="http://www.w3.org/2000/svg"><g transform="translate(-9.1509 -8.9179)"><text x="8.8036089" y="12.631264" style="fill:#0078d2;font-family:'Segoe UI';font-size:4.9389px;font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal;line-height:1.25;stroke-width:.26458" xml:space="preserve"><tspan x="8.8036089" y="12.631264" style="fill:#0078d2;font-family:'Segoe UI';font-size:4.9389px;font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal;stroke-width:.26458">-------------------------Разрыв страницы-------------------------</tspan></text></g></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="530"
+   height="21"
+   version="1.1"
+   viewBox="0 0 140.22535 5.5563141"
+   id="svg27"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs31" />
+  <g
+     transform="translate(2.8621552,-8.7772211)"
+     id="g25">
+    <text
+       x="-3.0298405"
+       y="12.631263"
+       style="font-size:4.9389px;line-height:1.25;font-family:'Segoe UI';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#0078d2;stroke-width:0.26458"
+       xml:space="preserve"
+       id="text23"><tspan
+         x="-3.0298405"
+         y="12.631263"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23338px;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#0078d2;stroke-width:0.26458"
+         id="tspan21">-------------------------------<tspan
+   style="font-size:2.82225px"
+   id="tspan101557"> </tspan>Разрыв страницы<tspan
+   style="font-size:2.82225px"
+   id="tspan104567"> </tspan>-------------------------------</tspan></text>
+  </g>
+</svg>

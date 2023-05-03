@@ -10,7 +10,8 @@
     "sourceMap": true,
     "outDir": "lib",
     "baseUrl": ".",
-    "types": ["mocha"]
+    "types": ["mocha"],
+    "skipLibCheck": true,
   },
   "include": [
     "src/demo/ts",
